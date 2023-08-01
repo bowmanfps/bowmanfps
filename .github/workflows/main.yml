@@ -36,6 +36,8 @@ jobs:
         run: |
           mkdir -vp ~/.local/share
           mv -v /root/.local/share/godot ~/.local/share/godot
+          rm -v ~/.local/share/godot/export_templates
+          ln -vs ~/.local/share/godot/templates ~/.local/share/godot/export_templates
       - name: Web Build
         run: |
           mkdir -v -p build/web
