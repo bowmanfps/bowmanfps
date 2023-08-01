@@ -34,10 +34,6 @@ window/size/window_width_override=480
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 
-[gui]
-
-theme/custom_font="res://fonts/Xolonium-Regular.ttf"
-
 [input]
 
 move_left={
