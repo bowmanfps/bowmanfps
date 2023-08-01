@@ -1,10 +1,10 @@
 # Godot 4+ specific ignores
 .godot/
 
-# Godot-specific ignores (NOTE: These were in the default from GitHub but seem to be needed for CI)
-# .import/
-# export.cfg
-# export_presets.cfg
+# Godot-specific ignores
+.import/
+export.cfg
+# export_presets.cfg (v4 still needs this)
 
 # Imported translations (automatically generated from CSV files)
 *.translation
