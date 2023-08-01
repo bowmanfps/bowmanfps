@@ -34,8 +34,8 @@ jobs:
           lfs: true
       - name: Setup
         run: |
-          mkdir -v -p ~/.local/share
-          mv /root/.local/share/godot ~/.local/share/godot
+          mkdir -vp ~/.local/share
+          mv -v /root/.local/share/godot ~/.local/share/godot
       - name: Web Build
         run: |
           mkdir -v -p build/web
