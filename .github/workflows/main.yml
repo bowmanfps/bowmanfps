@@ -1,0 +1,54 @@
+# https://news.ycombinator.com/item?id=36614114#36615789
+#  https://www.reddit.com/r/godot/comments/q25riu/hosting_on_github_pages/
+#   https://gist.githubusercontent.com/yet-another-lucas/c1dd9ecf11552cd7d3c6f66ef474eaf3/raw/5a094bbe993edb44189b4529cae6765afb3c86d9/ci-godot.yml
+#   https://github.com/abarichello/godot-ci/blob/master/.github/workflows/godot-ci.yml#L59-L92
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  export-web:
+    name: Web Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -vp ~/.local/share
+          mv -v /root/.local/share/godot ~/.local/share/godot
+          rm -v ~/.local/share/godot/export_templates
+          ln -vs ~/.local/share/godot/templates ~/.local/share/godot/export_templates
+      - name: Web Build
+        run: |
+          mkdir -vp build/web
+          godot -v --export-release --headless "Web" ./build/web/index.html
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: web
+          path: build/web
+      # Installing rsync is needed in order to deploy to GitHub Pages. Without it, the build will fail.
+      - name: Install rsync 📚
+        run: |
+          apt-get update && apt-get install -y rsync
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: pages # The branch the action should deploy to.
+          FOLDER: build/web # The folder the action should deploy.
